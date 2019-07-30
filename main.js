@@ -76,16 +76,6 @@ scrollers.forEach(scroller => {
     })
 })
 
-document.onkeydown = function(e) {
-    if (e.keyCode === 39) {
-        e.keyCode = 9;
-        e.preventDefault()
-    } else if (e.keyCode === 37) {
-        e.keyCode = 9;
-        e.preventDefault()
-    }
-}
-
 function dataFeed () {
     const data = {
         "code": 200,
