@@ -9,6 +9,7 @@ function handleLoad () {
     const masterData = dataFeed()
     masterData.section_name.map((list, index) => {
         const wrapper = document.querySelector('.wrapper')
+        const sectionWrapper = document.querySelector('.sectionWrapper')
         const sections = document.createElement('div')
         const parIndex = index + 1
         sections.setAttribute('tabindex', parIndex * 100)
@@ -22,7 +23,7 @@ function handleLoad () {
         scroller.classList.add('scroller')
         const tabindex = parIndex * 10
         list.data.map((child, index) => {
-            // vreating the name
+            // creating the name
             const name = document.createElement('div')
             name.setAttribute('tabindex', index + tabindex)
             name.style.backgroundColor = randomColor()
@@ -55,19 +56,26 @@ function handleLoad () {
       
             const image = document.createElement('img')
             const url = child.poster_url.replace(/'\'/g, '')
-            // image.setAttribute('src', url)
-            image.style.width = '100px'
-            image.style.height = '100px'
+            image.setAttribute('src', url)
+            image.style.width = '140px'
+            image.style.height = '120px'
 
             name.appendChild(image)
             scroller.appendChild(name)
         })
         sections.appendChild(scroller)
+        sectionWrapper.appendChild(sections)
 
-        wrapper.appendChild(sections)
+        // on load setting the focus to the first block
+        onLoadSectionFocus()
     })
-}
 
+
+function onLoadSectionFocus () {
+  const sections = document.querySelectorAll('.sections')
+  sections[0].focus()
+  localStorage.setItem('lastFocus', sections[0].tabIndex)
+}
 
 const scrollers = document.querySelectorAll('.scroller')
 scrollers.forEach(scroller => {
@@ -76,6 +84,52 @@ scrollers.forEach(scroller => {
     })
 })
 
+// listen key events
+document.addEventListener('keydown', (e) => {
+  if (e.keyCode === 37) {
+    setTileFocus(e, 37)
+    e.preventDefault()
+  } else if (e.keyCode === 38) {
+    setSectionFocus(e, 38)
+    e.preventDefault()
+  } else if (e.keyCode === 39) {
+    setTileFocus(e, 39)
+    e.preventDefault()
+  } else if (e.keyCode === 40) {
+    setSectionFocus(e, 40)
+    e.preventDefault()
+  }
+})
+
+// handle row focus
+function setSectionFocus (e, key) {
+  if (!document.activeElement.classList.contains('sections')) {
+    const last = document.querySelector(`[tabindex ='${localStorage.getItem('lastFocus')}']`)
+    last.focus()
+  }
+  if (key === 40 && e.target.nextSibling && e.target.nextSibling.classList.contains('sections')) {
+    e.target.nextSibling.focus()
+    localStorage.setItem('lastFocus', e.target.nextSibling.tabIndex)
+  } else if (key === 38 && e.target.previousSibling && e.target.previousSibling.classList && e.target.previousSibling.classList.contains('sections')) {
+    e.target.previousSibling.focus()
+    localStorage.setItem('lastFocus', e.target.previousSibling.tabIndex)
+  }
+}
+
+// handle tile focus
+function setTileFocus (e, key) {
+  if (document.activeElement.classList.contains('sections')) {
+    const tiles = document.activeElement.querySelectorAll('.name')
+    tiles[0].focus()
+  }
+  if (key === 37 && e.target.previousSibling && e.target.previousSibling.classList.contains('name')) {
+    e.target.previousSibling.focus()
+  } else if (key === 39 && e.target.nextSibling && e.target.nextSibling.classList && e.target.nextSibling.classList.contains('name')) {
+    e.target.nextSibling.focus()
+  }
+}
+
+}
 function dataFeed () {
     const data = {
         "code": 200,
