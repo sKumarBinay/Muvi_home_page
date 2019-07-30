@@ -55,7 +55,7 @@ function handleLoad () {
       
             const image = document.createElement('img')
             const url = child.poster_url.replace(/'\'/g, '')
-            image.setAttribute('src', url)
+            // image.setAttribute('src', url)
             image.style.width = '100px'
             image.style.height = '100px'
 
