@@ -8,3 +8,8 @@ body {
     padding: 24px;
     border: 10px solid #5a0303;
 }
+
+.sectionWrapper {
+    height: 300px;
+    width: 100px;
+}
