@@ -4,132 +4,35 @@ function randomColor () {
     return colors[randValue]
 }
 
-function handleLoad () {
-    // loading the data
-    const masterData = dataFeed()
-    masterData.section_name.map((list, index) => {
-        const wrapper = document.querySelector('.wrapper')
-        const sectionWrapper = document.querySelector('.sectionWrapper')
-        const sections = document.createElement('div')
-        const parIndex = index + 1
-        sections.setAttribute('tabindex', parIndex * 100)
-        sections.classList.add('sections')
-        // Creating the title
-        const title = document.createElement('h5')
-        title.innerHTML = list.title
-        sections.appendChild(title)
-        // creating the scroller
-        const scroller = document.createElement('div')
-        scroller.classList.add('scroller')
-        const tabindex = parIndex * 10
-        list.data.map((child, index) => {
-            // creating the name
-            const name = document.createElement('div')
-            name.setAttribute('tabindex', index + tabindex)
-            name.style.backgroundColor = randomColor()
-            name.classList.add('name')
-
-            // Listen to Click/ select event
-            name.addEventListener('click', (e) => {
-                e.stopPropagation()
-                e.target.focus()
-                window.alert(`Title: ${child.name}.`)
-
-            })
-
-            // Listen to focus event
-            name.addEventListener('focus', (e) => {
-                const description = document.querySelector('#description')
-                description.innerHTML = `<h2>Title: ${child.name}.</h2>`
-                description.innerHTML += ` Story in brief: ${child.story !== '' ? child.story : 'Sorry no story to display.'}`
-
-            })
-
-            // Listen to hover event
-            name.addEventListener('mouseover', (e) => {
-                const description = document.querySelector('#description')
-                description.innerHTML = `<h2>Title: ${child.name}.</h2>`
-                description.innerHTML += ` Story in brief: ${child.story !== '' ? child.story : 'Sorry no story to display.'}`
-
-            })
-
-      
-            const image = document.createElement('img')
-            const url = child.poster_url.replace(/'\'/g, '')
-            image.setAttribute('src', url)
-            image.style.width = '140px'
-            image.style.height = '120px'
-
-            name.appendChild(image)
-            scroller.appendChild(name)
-        })
-        sections.appendChild(scroller)
-        sectionWrapper.appendChild(sections)
-
-        // on load setting the focus to the first block
-        onLoadSectionFocus()
-    })
+// const url = child.poster_url.replace(/'\'/g, '')
+//             image.setAttribute('src', url)
+    
+    $(document).ready(function(){
+      const masterData = dataFeed()
+			$('#list1').caphList({
+				items : items,
+				template: '<div class="item item1" focusable data-focusable-initial-focus="<%=(index===0)?true:false%>"> <div style="width:100%; height:100%;				background-size:100% 100%; background: url(<%= item.image %>)"></div></div>',
+				containerClass : 'list',
+				onFocusItemView: function(context) {
+					console.log('focus', context);
+				},
+				onReachStart: function(context) {
+					console.log('reach start', context);
+				},
+				onReachEnd: function(context) {
+					console.log('reach end', context);
+				},
+				onScrollStart: function(context) {
+					console.log('scroll start!', context);
+				},
+				onScrollFinish: function(context) {
+					console.log('scroll finish!', context);
+				}
+			});
+    });
+    
 
 
-function onLoadSectionFocus () {
-  const sections = document.querySelectorAll('.sections')
-  sections[0].focus()
-  localStorage.setItem('lastFocus', sections[0].tabIndex)
-}
-
-const scrollers = document.querySelectorAll('.scroller')
-scrollers.forEach(scroller => {
-    scroller.addEventListener('click', (e) => {
-        e.target.focus()
-    })
-})
-
-// listen key events
-document.addEventListener('keydown', (e) => {
-  if (e.keyCode === 37) {
-    setTileFocus(e, 37)
-    e.preventDefault()
-  } else if (e.keyCode === 38) {
-    setSectionFocus(e, 38)
-    e.preventDefault()
-  } else if (e.keyCode === 39) {
-    setTileFocus(e, 39)
-    e.preventDefault()
-  } else if (e.keyCode === 40) {
-    setSectionFocus(e, 40)
-    e.preventDefault()
-  }
-})
-
-// handle row focus
-function setSectionFocus (e, key) {
-  if (!document.activeElement.classList.contains('sections')) {
-    const last = document.querySelector(`[tabindex ='${localStorage.getItem('lastFocus')}']`)
-    last.focus()
-  }
-  if (key === 40 && e.target.nextSibling && e.target.nextSibling.classList.contains('sections')) {
-    e.target.nextSibling.focus()
-    localStorage.setItem('lastFocus', e.target.nextSibling.tabIndex)
-  } else if (key === 38 && e.target.previousSibling && e.target.previousSibling.classList && e.target.previousSibling.classList.contains('sections')) {
-    e.target.previousSibling.focus()
-    localStorage.setItem('lastFocus', e.target.previousSibling.tabIndex)
-  }
-}
-
-// handle tile focus
-function setTileFocus (e, key) {
-  if (document.activeElement.classList.contains('sections')) {
-    const tiles = document.activeElement.querySelectorAll('.name')
-    tiles[0].focus()
-  }
-  if (key === 37 && e.target.previousSibling && e.target.previousSibling.classList.contains('name')) {
-    e.target.previousSibling.focus()
-  } else if (key === 39 && e.target.nextSibling && e.target.nextSibling.classList && e.target.nextSibling.classList.contains('name')) {
-    e.target.nextSibling.focus()
-  }
-}
-
-}
 function dataFeed () {
     const data = {
         "code": 200,
