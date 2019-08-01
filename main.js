@@ -4,56 +4,57 @@ function randomColor () {
     return colors[randValue]
 }
 
-// const url = child.poster_url.replace(/'\'/g, '')
-//             image.setAttribute('src', url)
-    
-    $(document).ready(function(){
+$(document).ready(function(){
+  const masterData = dataFeed()
+  const listContainer = document.querySelector('.list-container')          
+  masterData.section_name.map(section => {
+    const sectionDiv = document.createElement('div')
+    sectionDiv.classList.add('section')
+    const sectionTitle = document.createElement('div')
+    sectionTitle.classList.add('sectionTitle')
+    sectionTitle.innerHTML = section.title
+sectionDiv.appendChild(sectionTitle)
+// creating list div
+const listDiv = document.createElement('div')
+const id = section.title.replace(/ /g, '-')
+listDiv.setAttribute('id', id)
+    // innerData = section.data
+  sectionDiv.appendChild(listDiv)
+  listContainer.appendChild(sectionDiv)
+  const innerData = section.data
 
-      const masterData = dataFeed()
-      const sectionWrapper = document.querySelector('.sectionWrapper')
-      masterData.section_name.map(section => {
-        const sectionDiv = document.createElement('div')
-        sectionDiv.classList.add('section')
-        const sectionTitle = document.createElement('div')
-        sectionTitle.classList.add('sectionTitle')
-        sectionTitle.innerHTML = section.title
-        sectionDiv.appendChild(sectionTitle)
-        innerData = section.data
-        $(document).ready(function(){
-          var items = [];
-    
-          for(var i=0; i<20; i++){				
-            items.push({
-              text : i+1,
-              image : 'image/' +(i%2+1)+'.jpg'
-            });
-          }
-    
-          $('#list1').caphList({
-            items : items,
-            template: '<div class="item item1" focusable data-focusable-initial-focus="<%=(index===0)?true:false%>"> <div style="width:100%; height:100%;				background-size:100% 100%; background: url(<%= item.image %>)"></div></div>',
-            containerClass : 'list',
-            onFocusItemView: function(context) {
-              console.log('focus', context);
-            },
-            onReachStart: function(context) {
-              console.log('reach start', context);
-            },
-            onReachEnd: function(context) {
-              console.log('reach end', context);
-            },
-            onScrollStart: function(context) {
-              console.log('scroll start!', context);
-            },
-            onScrollFinish: function(context) {
-              console.log('scroll finish!', context);
-            }
-          });
-        });
-
-      })
+  $('#'+ id).caphList({
+    items : innerData,
+    template: '<div class="item item1" focusable data-focusable-depth="0" data-focusable-initial-focus="<%=(index===0)?true:false%>"> <img style="width:100%; height:100%" src="<%= item.poster_url %>"></img></div>',
+    containerClass : 'list',
+    onFocusItemView: function(context) {
+      console.log('focus', context);
+    },
+    // onReachStart: function(context) {
+    //   console.log('reach start', context);
+    // },
+    // onReachEnd: function(context) {
+    //   console.log('reach end', context);
+    // },
+    // onScrollStart: function(context) {
+    //   console.log('scroll start!', context);
+    // },
+    // onScrollFinish: function(context) {
+    //   console.log('scroll finish!', context);
+    // }
     })
 
+});
+})
+
+var items = [];
+  
+for(var i=0; i<20; i++){				
+  items.push({
+    text : i+1,
+    image : 'image/' +(i%2+1)+'.jpg'
+  });
+}
 
 function dataFeed () {
     const data = {
