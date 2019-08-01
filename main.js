@@ -18,30 +18,42 @@ function randomColor () {
         sectionTitle.classList.add('sectionTitle')
         sectionTitle.innerHTML = section.title
         sectionDiv.appendChild(sectionTitle)
-        window.innerData = section.data
-        $('.sectionWrapper').caphList({
-          items : window.innerData,
-          template: '<div class="item item1" focusable data-focusable-initial-focus="<%=(index===0)?true:false%>" style="width:100%; height:100%"> <div style="width:100%; height:100%;background-size:100%; border:1px solid red;background: url( <%=window.innerData.poster_url %>)"></div></div>',
-          containerClass : 'list',
-          // onFocusItemView: function(context) {
-          //   console.log('focus', context);
-          // },
-          // onReachStart: function(context) {
-          //   console.log('reach start', context);
-          // },
-          // onReachEnd: function(context) {
-          //   console.log('reach end', context);
-          // },
-          // onScrollStart: function(context) {
-          //   console.log('scroll start!', context);
-          // },
-          // onScrollFinish: function(context) {
-          //   console.log('scroll finish!', context);
-          // }
-        })
+        innerData = section.data
+        $(document).ready(function(){
+          var items = [];
+    
+          for(var i=0; i<20; i++){				
+            items.push({
+              text : i+1,
+              image : 'image/' +(i%2+1)+'.jpg'
+            });
+          }
+    
+          $('#list1').caphList({
+            items : items,
+            template: '<div class="item item1" focusable data-focusable-initial-focus="<%=(index===0)?true:false%>"> <div style="width:100%; height:100%;				background-size:100% 100%; background: url(<%= item.image %>)"></div></div>',
+            containerClass : 'list',
+            onFocusItemView: function(context) {
+              console.log('focus', context);
+            },
+            onReachStart: function(context) {
+              console.log('reach start', context);
+            },
+            onReachEnd: function(context) {
+              console.log('reach end', context);
+            },
+            onScrollStart: function(context) {
+              console.log('scroll start!', context);
+            },
+            onScrollFinish: function(context) {
+              console.log('scroll finish!', context);
+            }
+          });
+        });
 
       })
     })
+
 
 function dataFeed () {
     const data = {

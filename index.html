@@ -1,32 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Muvi assignment</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-    <!-- include CAPH 3.0.1 default package -->
+	<!-- include CAPH 3.0.1 default package -->
     <LINK href="lib/caph/3.0.1/caph.min.css" rel="stylesheet" type="text/stylesheet">
-        <!-- include jQuery file (you can use jQuery in your environment) -->
-        <SCRIPT src="lib/caph/3.0.1/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></SCRIPT>
-        <script src="lib/caph/3.0.1/bower_components/lodash/lodash.js" type="text/javascript"></script>
-        <!-- include the CAPH Package for jquery -->
-        <SCRIPT src="lib/caph/3.0.1/caph-jquery.min.js"></SCRIPT>
-    <script src="./main.js"></script>
-    <script>
-   
-    </script>
+    <!-- include jQuery file (you can use jQuery in your environment) -->
+    <SCRIPT src="lib/caph/3.0.1/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></SCRIPT>
+    <script src="lib/caph/3.0.1/bower_components/lodash/lodash.js" type="text/javascript"></script>
+    <!-- include the CAPH Package for jquery -->
+    <SCRIPT src="lib/caph/3.0.1/caph-jquery.min.js"></SCRIPT>
+    <style>
+		.list {
+			position: absolute;
+			width: 600px;
+			height: 80px;
+			overflow: hidden;
+			margin-bottom: 10px;
+			border: 1px solid transparent;
+		}
+		.item {
+			background: green;
+			box-sizing: border-box;
+			border: 3px solid white;
+			width: 120px;
+			height: 80px;
+		}     
+		.focused {
+			border: 3px solid red;
+		}   
+
+
+		.step-box {
+			padding: 17px;
+			width: 950px;
+			background-color:#f1f1f1;
+		}
+		.step-box > .title > b:first-child {
+			font-size:20px;
+		}
+		.step-box > .code {
+			margin-top: 20px;
+			color:#666666; 
+			border-left: 4px solid #009688; 
+			width: 80%; 
+			margin-left: 68px; 
+			padding-left: 2%; 
+			line-height: 170%; 
+			background-color: white;
+		}
+		.list-container {
+			height: 120px;
+		}
+		a {
+			text-decoration : none;
+		}
+		a:link {
+			color :gray;
+		}
+		a:visited {
+			color : gray;
+		}
+		html, body {
+			overflow-x: hidden;
+			padding: 0;
+			margin: 0;
+		}
+		.wrapper {
+			width: 100%;
+			padding: 5px 20px;
+			font-family : tahoma;
+			font-size : 17px;
+			max-width: 1000px;
+			font-weight: 500;
+		}
+		.wrapper h1 {
+			font-weight: 500;
+		}
+		.footer {
+			margin : 30px 0;	
+		}
+		.content {
+			margin : 40px 0;
+		}
+    </style>
+	<script>
+		$(document).ready(function(){
+			var items = [];
+
+			for(var i=0; i<20; i++){				
+				items.push({
+					text : i+1,
+					image : 'image/' +(i%2+1)+'.jpg'
+				});
+			}
+
+			$('#list1').caphList({
+				items : items,
+				template: '<div class="item item1" focusable data-focusable-initial-focus="<%=(index===0)?true:false%>"> <div style="width:100%; height:100%;				background-size:100% 100%; background: url(<%= item.image %>)"></div></div>',
+				containerClass : 'list',
+				onFocusItemView: function(context) {
+					console.log('focus', context);
+				},
+				onReachStart: function(context) {
+					console.log('reach start', context);
+				},
+				onReachEnd: function(context) {
+					console.log('reach end', context);
+				},
+				onScrollStart: function(context) {
+					console.log('scroll start!', context);
+				},
+				onScrollFinish: function(context) {
+					console.log('scroll finish!', context);
+				}
+            });
+            
+
+            
+			$('#list2').caphList({
+				items : items,
+				template: '<div class="item item1" focusable data-focusable-initial-focus="<%=(index===0)?true:false%>"> <div style="width:100%; height:100%;				background-size:100% 100%; background: url(<%= item.image %>)"></div></div>',
+				containerClass : 'list',
+				onFocusItemView: function(context) {
+					console.log('focus', context);
+				},
+				onReachStart: function(context) {
+					console.log('reach start', context);
+				},
+				onReachEnd: function(context) {
+					console.log('reach end', context);
+				},
+				onScrollStart: function(context) {
+					console.log('scroll start!', context);
+				},
+				onScrollFinish: function(context) {
+					console.log('scroll finish!', context);
+				}
+			});
+
+		});
+	</script>
 </head>
-
 <body>
-    <div class="wrapper">
-        <h1>CAPH</h1>
-        <div id="description"></div>
-        <div class="sectionWrapper"></div>
-    </div>
+<div class="wrapper">
+	<div class="header">
+	</div>
+	<div class="content">
+		<div class="list-container">
+            <div id="list1"></div> <!--style="position: absolute; left: 380px; top: 130px;"-->
+            <div id="list2"></div>
+		</div>
+	</div>
+</div>
 </body>
-
 </html>
